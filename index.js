@@ -233,7 +233,6 @@ window.onload=()=>{
     leaf2.position.set(-9,2,6)
     scene.add(leaf2)
 
-    //TEST
     
 
     // let text = createText()
