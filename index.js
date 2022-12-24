@@ -150,7 +150,11 @@ let render=()=>{
     requestAnimationFrame(render)
     renderer.render(scene,camera)
 }
-
+window.onresize = () => {
+    renderer.setSize(innerWidth, innerHeight)
+    camera.aspect = innerWidth / innerHeight
+    camera.updateProjectMatrix()
+}
 window.onload=()=>{
     init()
     createSkyBox()
@@ -197,6 +201,7 @@ window.onload=()=>{
     
     let snowmanNose =createCone(0.15,0.5,32,0xFFA500)
     snowmanNose.position.set(5,-5.8,4)
+    snowmanNose.rotateX(Math.PI )
     scene.add(snowmanNose)
     
     let snowmanButton1= createSnowmanButton()
