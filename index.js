@@ -2,6 +2,7 @@ import * as THREE from './three.js/three.js/build/three.module.js';
 import * as tGeo from './three.js/three.js/examples/jsm/geometries/TextGeometry.js';
 import * as tFont from './three.js/three.js/examples/jsm/loaders/FontLoader.js';
 import * as controlLib from './three.js/three.js/examples/jsm/controls/OrbitControls.js'
+import {GLTFLoader} from './three.js/three.js/examples/jsm/loaders/GLTFLoader.js'
 
 let scene,renderer,camera,control
 
@@ -9,7 +10,8 @@ let init = () =>{
     scene = new THREE.Scene()
 
     let fov=45
-    camera = new THREE.PerspectiveCamera(fov)
+    let ratio = window.innerWidth/window.innerHeight
+    camera = new THREE.PerspectiveCamera(fov, ratio)
     camera.position.set(0,-50,20)
     camera.lookAt(0,0,0)
 
@@ -23,6 +25,7 @@ let init = () =>{
     control = new controlLib.OrbitControls(camera,renderer.domElement)
     renderer.shadowMap.enabled = true
 }
+
 let createSkyBox=()=>{
     const skyBox = new THREE.Mesh()
     scene.background = new THREE.CubeTextureLoader()
@@ -146,6 +149,22 @@ let createBox=()=>{
     return box
 }
 
+let loadItem = () =>{
+    const loader = new GLTFLoader()
+    loader.load('assets/model/scene.gltf', (gltf) =>
+        {
+            let obj = gltf.scene
+            obj.scale.set(20,20,20)
+            obj.position.set(-69, 50, -1)
+            obj.rotateX(Math.PI/2)
+            obj.castShadow = true
+            obj.receiveShadow = true
+            scene.add(obj)
+            // console.log(gltf)
+        }
+    )
+}
+
 let render=()=>{
     requestAnimationFrame(render)
     renderer.render(scene,camera)
@@ -233,6 +252,9 @@ window.onload=()=>{
     leaf2.position.set(-9,2,6)
     scene.add(leaf2)
 
+
+    //House
+    loadItem()
     
 
     // let text = createText()
