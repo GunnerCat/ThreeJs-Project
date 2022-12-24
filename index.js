@@ -174,6 +174,7 @@ window.onresize = () => {
     camera.aspect = innerWidth / innerHeight
     camera.updateProjectMatrix()
 }
+
 window.onload=()=>{
     init()
     createSkyBox()
@@ -202,35 +203,35 @@ window.onload=()=>{
     scene.add(globe)
     //snowman parts
     let baseSnowman = createSnowman(1.5)
-    baseSnowman.position.set(5,-5,1)
+    baseSnowman.position.set(8,-5,1)
     scene.add(baseSnowman)
     let midSnowman= createSnowman(1)
-    midSnowman.position.set(5,-5,3)
+    midSnowman.position.set(8,-5,3)
     scene.add(midSnowman)
     let upperSnowman= createSnowman(0.8)
-    upperSnowman.position.set(5,-5,4)
+    upperSnowman.position.set(8,-5,4)
     scene.add(upperSnowman)
 
     let snowmanEye= createSnowmanButton()
-    snowmanEye.position.set(4.7,-5.8,4.3)
+    snowmanEye.position.set(7.7,-5.8,4.3)
     scene.add(snowmanEye)
     let snowmanEye2= createSnowmanButton()
-    snowmanEye2.position.set(5.2,-5.8,4.3)
+    snowmanEye2.position.set(8.2,-5.8,4.3)
     scene.add(snowmanEye2)
     
     let snowmanNose =createCone(0.15,0.5,32,0xFFA500)
-    snowmanNose.position.set(5,-5.8,4)
+    snowmanNose.position.set(8,-5.8,4)
     snowmanNose.rotateX(Math.PI )
     scene.add(snowmanNose)
     
     let snowmanButton1= createSnowmanButton()
-    snowmanButton1.position.set(5,-6,2.5)
+    snowmanButton1.position.set(8,-6,2.5)
     scene.add(snowmanButton1)
     let snowmanButton2= createSnowmanButton()
-    snowmanButton2.position.set(5,-6,3)
+    snowmanButton2.position.set(8,-6,3)
     scene.add(snowmanButton2)
     let snowmanButton3= createSnowmanButton()
-    snowmanButton3.position.set(5,-6,3.5)
+    snowmanButton3.position.set(8,-6,3.5)
     scene.add(snowmanButton3)
     createText()
 
