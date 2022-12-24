@@ -1,5 +1,7 @@
-import * as THREE from './three.js-master/build/three.module.js';
-// import * as tGeo from './three.js/examples/jsm/geometries/TextGeometry.js';
+import * as THREE from './three.js/three.js/build/three.module.js';
+import * as tGeo from './three.js/three.js/examples/jsm/geometries/TextGeometry.js';
+import * as tFont from './three.js/three.js/examples/jsm/loaders/FontLoader.js';
+import * as controlLib from './three.js/three.js/examples/jsm/controls/OrbitControls.js'
 
 let scene,renderer,camera,control
 
@@ -18,7 +20,7 @@ let init = () =>{
     renderer.setSize(window.innerWidth,window.innerHeight)
     document.body.appendChild(renderer.domElement)
 
-    // control = new OrbitControls(camera,render.domElement)
+    control = new controlLib.OrbitControls(camera,renderer.domElement)
     renderer.shadowMap.enabled = true
 }
 let createSkyBox=()=>{
@@ -35,7 +37,7 @@ let createSkyBox=()=>{
 	] );
 }
 let createAmbientLight=()=>{
-    let ambientLight = new THREE.AmbientLight(0xffffff,0.8)
+    let ambientLight = new THREE.AmbientLight(0xffffff,1)
     return ambientLight
 }
 
@@ -103,15 +105,45 @@ let createSnowmanButton=()=>{
     snowMan.castShadow=true
     return snowMan
 }
-let createNose=()=>{
-    let geometry=new THREE.ConeGeometry(0.15,0.5,32)
+let createCone=(radius,height,radSeg,color)=>{
+    let geometry=new THREE.ConeGeometry(radius,height,radSeg)
     let material = new THREE.MeshBasicMaterial({
-        color:0xFFA500
+        color:color
     })
-    let nose = new THREE.Mesh(geometry,material)
-    nose.castShadow=true
-    return nose
+    let cone = new THREE.Mesh(geometry,material)
+    cone.castShadow=true
+    return cone
 
+}
+let createText=()=>{
+    let loader = new tFont.FontLoader()
+    loader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/fonts/droid/droid_sans_bold.typeface.json',font=>{
+        let TextGeometry = new tGeo.TextGeometry("Snowman",{
+            font: font,
+            size: 2,
+            height: 0,
+   
+        })
+
+        let textMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff
+        })
+        let text = new THREE.Mesh(TextGeometry, textMaterial)
+        text.position.set(2,-19,-2.5)
+        text.rotateX(1)
+        text.rotateY(0.37)
+        text.rotateZ(0.2)
+        scene.add(text)
+    })
+}
+let createBox=()=>{
+    let geometry = new THREE.BoxGeometry(0.5,7,0.5)
+    let material = new THREE.MeshPhongMaterial({
+        color:0x3f301d,
+    })
+    let box = new THREE.Mesh(geometry,material)
+    box.castShadow=true
+    return box
 }
 
 let render=()=>{
@@ -167,7 +199,7 @@ window.onload=()=>{
     snowmanEye2.position.set(5.2,-5.8,4.3)
     scene.add(snowmanEye2)
     
-    let snowmanNose =createNose()
+    let snowmanNose =createCone(0.15,0.5,32,0xFFA500)
     snowmanNose.position.set(5,-5.8,4)
     scene.add(snowmanNose)
     
@@ -180,10 +212,30 @@ window.onload=()=>{
     let snowmanButton3= createSnowmanButton()
     snowmanButton3.position.set(5,-6,3.5)
     scene.add(snowmanButton3)
-    
+    createText()
+
+    //tree
+    let trunk1 = createBox()
+    trunk1.rotateX(Math.PI/2)
+    trunk1.position.set(-7,5,0)
+    scene.add(trunk1)
+    let trunk2 = createBox()
+    trunk2.rotateX(Math.PI/2)
+    trunk2.position.set(-9,2,0)
+    scene.add(trunk2)
+    let leaf1 = createCone(1.5,5,32,0x32612D)
+    scene.add(leaf1)
+    let leaf2 = createCone(1.5,5,32,0x32612D)
+    // let text = createText()
+
+    // text.position.set(0,0,3)
+    // text.rotateX(1)
+    // text.rotateY(0.37)
+    // text.rotateZ(0.2)
+    // scene.add(text)
 
 
     render()
-    // control.update()
+    control.update()
 
 }
