@@ -163,10 +163,6 @@ window.onload=()=>{
     pointLight.position.set(0, 0, 10)
     scene.add(pointLight)
 
-    //lighthelper
-    let PointLightHelper = createlightHelper(pointLight)
-    scene.add(PointLightHelper)
-
     //ground
     let ground = createCircle()
     scene.add(ground)
@@ -224,8 +220,14 @@ window.onload=()=>{
     trunk2.position.set(-9,2,0)
     scene.add(trunk2)
     let leaf1 = createCone(1.5,5,32,0x32612D)
+    leaf1.rotateX(Math.PI/2)
+    leaf1.position.set(-7,5,6)
     scene.add(leaf1)
     let leaf2 = createCone(1.5,5,32,0x32612D)
+    leaf2.rotateX(Math.PI/2)
+    leaf2.position.set(-9,2,6)
+    scene.add(leaf2)
+
     // let text = createText()
 
     // text.position.set(0,0,3)
