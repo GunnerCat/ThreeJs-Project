@@ -231,7 +231,9 @@ window.onload=()=>{
     let leaf2 = createCone(1.5,5,32,0x32612D)
     leaf2.rotateX(Math.PI/2)
     leaf2.position.set(-9,2,6)
-    scene.add(leaf2) 
+    scene.add(leaf2)
+
+    //TEST
     
 
     // let text = createText()
