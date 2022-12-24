@@ -27,7 +27,6 @@ let init = () =>{
 }
 
 let createSkyBox=()=>{
-    const skyBox = new THREE.Mesh()
     scene.background = new THREE.CubeTextureLoader()
 	.setPath( './assets/skybox' )
     .load( [
@@ -149,6 +148,14 @@ let createBox=()=>{
     return box
 }
 
+let onMouseClick = () =>{
+    
+}
+
+let addEventListener = () =>{
+    document.addEventListener("click", onMouseClick)
+}
+
 let loadItem = () =>{
     const loader = new GLTFLoader()
     loader.load('assets/model/scene.gltf', (gltf) =>
@@ -169,6 +176,13 @@ let render=()=>{
     requestAnimationFrame(render)
     renderer.render(scene,camera)
 }
+
+window.onmousemove = (e) => {
+    mouse = new tri.Vector2()
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+    mouse.y = -((e.clientY / window.innerHeight) * 2 - 1)
+}
+
 window.onresize = () => {
     renderer.setSize(innerWidth, innerHeight)
     camera.aspect = innerWidth / innerHeight
