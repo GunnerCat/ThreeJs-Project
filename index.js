@@ -148,12 +148,24 @@ let createBox=()=>{
     return box
 }
 
-let onMouseClick = () =>{
-    
+
+let keyListener = (e) =>{
+    let keyCode = e.keyCode
+    if (keyCode==32){
+        camera.position.set(0,-50,20)
+    }
 }
 
+let animate =()=>{
+    if(camera.position.z>=10){
+        camera.position.z-=0.1
+    }
+    renderer.render(scene,camera)
+}
+// renderer.setAnimationLoop(animate)
+
 let addEventListener = () =>{
-    document.addEventListener("click", onMouseClick)
+    document.addEventListener("keydown", keyListener)
 }
 
 let loadItem = () =>{
@@ -169,19 +181,16 @@ let loadItem = () =>{
             scene.add(obj)
             // console.log(gltf)
         }
-    )
-}
-
-let render=()=>{
-    requestAnimationFrame(render)
-    renderer.render(scene,camera)
-}
-
-window.onmousemove = (e) => {
-    mouse = new tri.Vector2()
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-    mouse.y = -((e.clientY / window.innerHeight) * 2 - 1)
-}
+        )
+    }
+    
+    
+    
+// window.onmousemove = (e) => {
+//     mouse = new tri.Vector2()
+//     mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+//     mouse.y = -((e.clientY / window.innerHeight) * 2 - 1)
+// }
 
 window.onresize = () => {
     renderer.setSize(innerWidth, innerHeight)
@@ -270,17 +279,18 @@ window.onload=()=>{
 
     //House
     loadItem()
-    
-
     // let text = createText()
-
+    addEventListener();
     // text.position.set(0,0,3)
     // text.rotateX(1)
     // text.rotateY(0.37)
     // text.rotateZ(0.2)
     // scene.add(text)
-
-
+    let render=()=>{
+        requestAnimationFrame(render)
+        camera.lookAt(0,0,0)
+        renderer.setAnimationLoop(animate())
+    }
     render()
     control.update()
 
