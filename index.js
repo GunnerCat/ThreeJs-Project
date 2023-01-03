@@ -12,7 +12,7 @@ let init = () =>{
     let fov=45
     let ratio = window.innerWidth/window.innerHeight
     camera = new THREE.PerspectiveCamera(fov, ratio)
-    camera.position.set(0,-50,20)
+    camera.position.set(0,-50,70)
     camera.lookAt(0,0,0)
 
     renderer = new THREE.WebGLRenderer ({
@@ -117,6 +117,15 @@ let createCone=(radius,height,radSeg,color)=>{
     return cone
 
 }
+let createSnow = () =>{
+    let geo = new THREE.SphereGeometry(0.1, 32, 6)
+    let material = new THREE.MeshBasicMaterial({
+        color: "#FFFFFF"
+    })
+    let snow = new THREE.Mesh(geo, material)
+    snow.castShadow = true
+    return snow
+}
 let createText=()=>{
     let loader = new tFont.FontLoader()
     loader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/fonts/droid/droid_sans_bold.typeface.json',font=>{
@@ -151,15 +160,19 @@ let createBox=()=>{
 
 let keyListener = (e) =>{
     let keyCode = e.keyCode
-    if (keyCode==32){
-        camera.position.set(0,-50,20)
+    if(keyCode==32 && (camera.position.x!=0 || camera.position.y!=-50)){
+        camera.position.set(0,-50,70)
     }
+    if(keyCode==32 && camera.position.z>10){
+        camera.position.z-=1
+    }
+    
 }
 
 let animate =()=>{
-    if(camera.position.z>=10){
-        camera.position.z-=0.1
-    }
+    // if(camera.position.z>=10){
+    //     camera.position.z-=1
+    // }
     renderer.render(scene,camera)
 }
 // renderer.setAnimationLoop(animate)
@@ -276,6 +289,11 @@ window.onload=()=>{
     leaf2.position.set(-9,2,6)
     scene.add(leaf2)
 
+    //snow
+    let snow1 = createSnow()
+    snow1.position.set(-9,4,6)
+    scene.add(snow1)
+
 
     //House
     loadItem()
@@ -289,7 +307,8 @@ window.onload=()=>{
     let render=()=>{
         requestAnimationFrame(render)
         camera.lookAt(0,0,0)
-        renderer.setAnimationLoop(animate())
+        renderer.render(scene,camera)
+        // renderer.setAnimationLoop(animate())
     }
     render()
     control.update()
