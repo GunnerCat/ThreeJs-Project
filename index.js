@@ -4,7 +4,7 @@ import * as tFont from './three.js/three.js/examples/jsm/loaders/FontLoader.js';
 import * as controlLib from './three.js/three.js/examples/jsm/controls/OrbitControls.js'
 import {GLTFLoader} from './three.js/three.js/examples/jsm/loaders/GLTFLoader.js'
 
-let scene,renderer,camera,control
+let scene,renderer,camera,control,mouse
 
 let init = () =>{
     scene = new THREE.Scene()
@@ -71,6 +71,7 @@ let createCylinder=()=>{
         color:0x000000,
     })
     let base = new THREE.Mesh(geometry,material)
+
     return base
 }
 
@@ -89,7 +90,7 @@ let createGlobe=()=>{
     return globe
 
 }
-let createSnowman=(radius)=>{
+let createSphere=(radius)=>{
     let geometry=new THREE.SphereGeometry(radius,32,6)
     let material = new THREE.MeshStandardMaterial({
         color:0xffffff
@@ -176,9 +177,18 @@ let animate =()=>{
     renderer.render(scene,camera)
 }
 // renderer.setAnimationLoop(animate)
-
+let onMouseClick=()=>{
+    const raycasting = new THREE.Raycaster()
+    raycasting.setFromCamera(mouse,camera)
+    
+    const intersect = raycasting.intersectObjects(scene.children)
+    if(intersect.length > 0){
+        console.log(intersect[0].object)
+    }
+}
 let addEventListener = () =>{
     document.addEventListener("keydown", keyListener)
+    document.addEventListener("click", onMouseClick)
 }
 
 let loadItem = () =>{
@@ -192,18 +202,17 @@ let loadItem = () =>{
             obj.castShadow = true
             obj.receiveShadow = true
             scene.add(obj)
-            // console.log(gltf)
         }
         )
     }
     
     
-    
-// window.onmousemove = (e) => {
-//     mouse = new tri.Vector2()
-//     mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-//     mouse.y = -((e.clientY / window.innerHeight) * 2 - 1)
-// }
+
+window.onmousemove = (e) => {
+    mouse = new THREE.Vector2()
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+    mouse.y = -((e.clientY / window.innerHeight) * 2 - 1)
+}
 
 window.onresize = () => {
     renderer.setSize(innerWidth, innerHeight)
@@ -228,23 +237,25 @@ window.onload=()=>{
     scene.add(ground)
     //base
     let base = createCylinder()
+    base.name="base"
     base.position.set(0,0,-2.1)
     base.rotateX(1.57)
     scene.add(base)
     //globe
     let globe = createGlobe()
+    globe.name="globe"
     globe.position.set(0,0,2)
     globe.rotateX(1.57)
     globe.rotateZ(3.1)
     scene.add(globe)
     //snowman parts
-    let baseSnowman = createSnowman(1.5)
+    let baseSnowman = createSphere(1.5)
     baseSnowman.position.set(8,-5,1)
     scene.add(baseSnowman)
-    let midSnowman= createSnowman(1)
+    let midSnowman= createSphere(1)
     midSnowman.position.set(8,-5,3)
     scene.add(midSnowman)
-    let upperSnowman= createSnowman(0.8)
+    let upperSnowman= createSphere(0.8)
     upperSnowman.position.set(8,-5,4)
     scene.add(upperSnowman)
 
@@ -276,6 +287,7 @@ window.onload=()=>{
     trunk1.rotateX(Math.PI/2)
     trunk1.position.set(-7,5,0)
     scene.add(trunk1)
+
     let trunk2 = createBox()
     trunk2.rotateX(Math.PI/2)
     trunk2.position.set(-9,2,0)
@@ -298,6 +310,9 @@ window.onload=()=>{
     //House
     loadItem()
     // let text = createText()
+
+
+    
     addEventListener();
     // text.position.set(0,0,3)
     // text.rotateX(1)
