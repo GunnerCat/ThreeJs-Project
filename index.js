@@ -158,17 +158,28 @@ let createBox=()=>{
     return box
 }
 
-
 let keyListener = (e) =>{
     let keyCode = e.keyCode
+    
     if(keyCode==32 && (camera.position.x!=0 || camera.position.y!=-50)){
         camera.position.set(0,-50,70)
     }
+    
     if(keyCode==32 && camera.position.z>10){
-        camera.position.z-=1
+        let delay = setInterval(()=>{
+            if(camera.position.z > 10){
+             camera.position.z-=1
+            }else{
+             clearInterval(delay);
+            }
+         }, 10)
     }
+
     
 }
+
+
+
 
 let animate =()=>{
     // if(camera.position.z>=10){
