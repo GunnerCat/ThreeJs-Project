@@ -118,15 +118,7 @@ let createCone=(radius,height,radSeg,color)=>{
     return cone
 
 }
-let createSnow = () =>{
-    let geo = new THREE.SphereGeometry(0.1, 32, 6)
-    let material = new THREE.MeshBasicMaterial({
-        color: "#FFFFFF"
-    })
-    let snow = new THREE.Mesh(geo, material)
-    snow.castShadow = true
-    return snow
-}
+
 let createText=()=>{
     let loader = new tFont.FontLoader()
     loader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/fonts/droid/droid_sans_bold.typeface.json',font=>{
@@ -168,7 +160,7 @@ let keyListener = (e) =>{
     if(keyCode==32 && camera.position.z>10){
         let delay = setInterval(()=>{
             if(camera.position.z > 10){
-             camera.position.z-=1
+             camera.position.z-=0.5
             }else{
              clearInterval(delay);
             }
@@ -177,26 +169,35 @@ let keyListener = (e) =>{
 
     
 }
-
-
-
-
-let animate =()=>{
-    // if(camera.position.z>=10){
-    //     camera.position.z-=1
-    // }
-    renderer.render(scene,camera)
+let snowfall=(snow)=>{
+    let delay = setInterval(()=>{
+        if(snow.position.z >0){
+         snow.position.z-=0.1
+        }else{
+         clearInterval(delay);
+        }
+     }, 10)
 }
-// renderer.setAnimationLoop(animate)
+
+let createSnow=(snow)=>{
+    snow.position.set(Math.floor(Math.random()*20)-10,Math.floor(Math.random()*20)-10,Math.floor(Math.random()*15))
+    scene.add(snow)
+}
 let onMouseClick=()=>{
     const raycasting = new THREE.Raycaster()
     raycasting.setFromCamera(mouse,camera)
     
     const intersect = raycasting.intersectObjects(scene.children)
     if(intersect.length > 0){
-        console.log(intersect[0].object)
+        let snow=[10]
+        for (let l = 1; l <=100; l++) {
+            snow[l] = createSphere(0.1)
+            createSnow(snow[l])
+            snowfall(snow[l])
+        }             
     }
 }
+
 let addEventListener = () =>{
     document.addEventListener("keydown", keyListener)
     document.addEventListener("click", onMouseClick)
@@ -259,6 +260,7 @@ window.onload=()=>{
     globe.rotateX(1.57)
     globe.rotateZ(3.1)
     scene.add(globe)
+
     //snowman parts
     let baseSnowman = createSphere(1.5)
     baseSnowman.position.set(8,-5,1)
@@ -313,13 +315,11 @@ window.onload=()=>{
     scene.add(leaf2)
 
     //snow
-    let snow1 = createSnow()
-    snow1.position.set(-9,4,6)
-    scene.add(snow1)
 
 
     //House
     loadItem()
+    
     // let text = createText()
 
 
