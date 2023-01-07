@@ -189,11 +189,12 @@ let onMouseClick=()=>{
     
     const intersect = raycasting.intersectObjects(scene.children)
     if(intersect.length > 0){
-        let snow=[10]
-        for (let l = 1; l <=100; l++) {
-            snow[l] = createSphere(0.1)
-            createSnow(snow[l])
-            snowfall(snow[l])
+        let totalSnow = 100
+        let snow
+        for (let l = 1; l <=totalSnow; l++) {
+            snow = createSphere(0.1)
+            createSnow(snow)
+            snowfall(snow)
         }             
     }
 }
